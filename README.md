@@ -22,7 +22,7 @@ JavaScript engine — pinned to the tag that ships with **React Native 0.85.3**
 ## Install
 
 ```sh
-git clone <this-repo-url> hermes-clone-for-mac
+git clone https://github.com/filmverse/hermes-clone-for-mac.git
 cd hermes-clone-for-mac
 ./install.sh
 ```
