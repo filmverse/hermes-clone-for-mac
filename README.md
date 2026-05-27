@@ -65,6 +65,29 @@ Prefer no shell setup at all? Call binaries by path: `./hermes/build/bin/hermes 
 
 ---
 
+## The bundled demo — `hello.js`
+
+`hello.js` is a guided tour of features supported by this Hermes build. Run it once with `hermes hello.js` to see the output; open it in an editor to read the source and tweak any section. Each block is independent.
+
+| # | Section | What it demonstrates |
+|---|---|---|
+| 1 | `print` vs `console.log` | Both work; `print()` is the idiomatic Hermes CLI primitive |
+| 2 | Modern ES syntax | Default params, template literals, spread/rest, destructuring |
+| 3 | Classes | `#private` fields, `static` fields, fluent method chaining |
+| 4 | Collections | `Map`, `Set`, `for..of` iteration |
+| 5 | Generators | Lazy infinite Fibonacci sequence + a `take(gen, n)` helper |
+| 6 | `BigInt` | Arbitrary-precision integers (`2n ** 100n`) |
+| 7 | `?.` and `??` | Optional chaining and nullish coalescing |
+| 8 | Regex | Named capture groups + `\p{Letter}` unicode property escapes |
+| 9 | JSON | `JSON.parse` / `stringify` roundtrip with pretty-printing |
+| 10 | `async`/`await` | Promise resolution (microtask queue drains before exit) |
+
+Why async is last: the standalone Hermes CLI has no event loop, but it does drain the microtask queue before exiting. Putting the async section last lets the `.then` callback fire in the natural visual order rather than after the rest of the output.
+
+Things you **won't** find in `hello.js` because this engine doesn't support them: `fetch`, `setTimeout` (with real timing), `require`/`import` from file paths, `fs`, `process`, `Intl`. See the [Hermes vs Node.js](#hermes-vs-nodejs) section below for the full list.
+
+---
+
 ## The three tools
 
 The build produces three CLI binaries in `./hermes/build/bin/`:
