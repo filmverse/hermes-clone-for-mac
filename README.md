@@ -43,17 +43,25 @@ Safe to re-run — the clone is skipped if `./hermes/` already exists, and CMake
 
 ## Quick start
 
-After install, three lines and you're running JS through Hermes:
+After install, run the bundled demo:
 
 ```sh
 source ./env.sh
-echo "print('hello');" > hello.js
 hermes hello.js
 ```
 
+`hello.js` is a guided tour of features this engine supports — modern syntax, classes with private fields, generators, BigInt, async/await, regex with unicode, JSON, and more. Open it in an editor and tweak any section to experiment.
+
 `source env.sh` adds `hermes/build/bin/` to your `PATH` **for the current shell only**. It doesn't touch your `.zshrc` / `.bashrc`.
 
-Prefer no shell setup? Call binaries by path instead: `./hermes/build/bin/hermes hello.js`.
+Want to run your own code? Drop it in a file and pass it:
+
+```sh
+echo "print(2 + 2);" > my.js
+hermes my.js
+```
+
+Prefer no shell setup at all? Call binaries by path: `./hermes/build/bin/hermes hello.js`.
 
 ---
 
