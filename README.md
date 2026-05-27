@@ -213,3 +213,20 @@ Confirm the exact upstream commit on your machine after install:
 ```sh
 git -C hermes rev-parse HEAD
 ```
+
+---
+
+## License & attribution
+
+This repository — the wrapper script, `env.sh`, and README — is released under
+the **MIT License**. See [`LICENSE`](./LICENSE).
+
+The Hermes source code that `install.sh` clones into `./hermes/` is the work
+of Meta Platforms, Inc., released separately under its own **MIT License**.
+Nothing in this repo grants any additional rights over upstream Hermes — your
+use of the cloned source is governed by Meta's `LICENSE` file inside
+`./hermes/` after install. See [facebook/hermes](https://github.com/facebook/hermes)
+for the canonical source.
+
+This repo is **not affiliated with or endorsed by Meta**; it's a community
+convenience wrapper that simply automates the documented build process.
