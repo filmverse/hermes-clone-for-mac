@@ -36,7 +36,7 @@ What `install.sh` does:
 3. Checks out the RN 0.85.3 tag (`hermes-v250829098.0.10`).
 4. Configures CMake (`Release`, native arch from `uname -m`).
 5. Builds with all available CPU cores.
-6. Runs a smoke test (`hermes -e "print('hello from hermes')"`).
+6. Runs a smoke test (writes a tiny `.js` file to a temp path and runs it).
 7. Prints the version and the upstream commit hash.
 
 Binaries land in `./hermes/build/bin/`:
@@ -49,11 +49,16 @@ Binaries land in `./hermes/build/bin/`:
 
 Two options, pick whichever you prefer.
 
+Note: `hermes` takes a `.js` file (or compiled `.hbc` bytecode) as its
+argument — it does **not** have a `node`-style `-e "..."` flag in this tag.
+Put your code in a file and pass the file.
+
 ### Option A — `source env.sh` once per shell
 
 ```sh
 source env.sh
-hermes -e "print('hi')"
+echo "print('hi');" > hi.js
+hermes hi.js
 hermesc demo.js -emit-binary -out demo.hbc
 hbcdump demo.hbc
 ```
@@ -64,10 +69,19 @@ touch your `.zshrc`, `.bashrc`, or any other config file.
 ### Option B — call binaries by path
 
 ```sh
-./hermes/build/bin/hermes -e "print('hi')"
+echo "print('hi');" > hi.js
+./hermes/build/bin/hermes hi.js
 ```
 
 No shell setup, but more typing.
+
+### Shortcut — run an inline one-liner
+
+bash/zsh process substitution lets you skip the intermediate file:
+
+```sh
+hermes <(echo "print('hi');")
+```
 
 ## Compile + run roundtrip
 
@@ -83,8 +97,9 @@ echo "print('compiled bytecode works');" > demo.js
 
 ```sh
 ./hermes/build/bin/hermes --version
-./hermes/build/bin/hermes -e "print(1 + 1)"     # -> 2
-git -C hermes rev-parse HEAD                    # upstream commit pinned by tag
+echo "print(1 + 1);" > /tmp/check.js
+./hermes/build/bin/hermes /tmp/check.js          # -> 2
+git -C hermes rev-parse HEAD                     # upstream commit pinned by tag
 ```
 
 ## Re-run / update

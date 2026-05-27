@@ -60,8 +60,12 @@ log "Building with ${JOBS} parallel jobs (first build ~15-30 min)"
 cmake --build "${BUILD_DIR}" -j"${JOBS}"
 
 # ---- smoke test ------------------------------------------------------------
+# Hermes' CLI takes file args (no -e flag), so we run a small temp script.
 log "Smoke test"
-"${BUILD_DIR}/bin/hermes" -e "print('hello from hermes')"
+SMOKE_JS="$(mktemp -t hermes-smoke)"
+trap 'rm -f "${SMOKE_JS}"' EXIT
+printf "print('hello from hermes');\n" > "${SMOKE_JS}"
+"${BUILD_DIR}/bin/hermes" "${SMOKE_JS}"
 
 # ---- verify ----------------------------------------------------------------
 log "Versions"
@@ -77,10 +81,10 @@ Done. Binaries are at:
 
 To use Hermes in your current shell:
   source ${SCRIPT_DIR}/env.sh
-  hermes -e "print('hi')"
+  echo "print('hi');" > hi.js && hermes hi.js
 
 Or call binaries directly without modifying PATH:
-  ${BUILD_DIR}/bin/hermes -e "print('hi')"
+  echo "print('hi');" > hi.js && ${BUILD_DIR}/bin/hermes hi.js
 
 To uninstall, just remove this folder:
   rm -rf ${SCRIPT_DIR}
